@@ -34,6 +34,10 @@ RUN npm rebuild && node packages/coding-agent/postinstall.cjs
 RUN npm run build
 
 # Build JupyterLab frontend extension (TypeScript)
+# Need JupyterLab installed for @jupyterlab/builder core path
+RUN pip3 install --break-system-packages --no-cache-dir \
+    jupyterlab==4.6.* hatchling hatch-jupyter-builder
+
 WORKDIR /app/jupyterlab-ext
 COPY jupyterlab-ext/package.json jupyterlab-ext/package-lock.json ./
 RUN npm ci
