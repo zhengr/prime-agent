@@ -20403,7 +20403,7 @@ export const MODELS = {
 			name: "MixTao",
 			api: "openai-completions",
 			provider: "mixtao",
-			baseUrl: process.env.MIXTAO_BASE_URL || "http://YOUR_API_ENDPOINT",
+			baseUrl: process.env.MIXTAO_BASE_URL!,
 			reasoning: false,
 			input: ["text"],
 			cost: {
