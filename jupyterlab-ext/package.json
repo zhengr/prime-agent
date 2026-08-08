@@ -1,49 +1,30 @@
 {
   "name": "prime-agent-jupyterlab",
   "version": "0.1.0",
-  "description": "JupyterLab sidebar chat panel for Prime Agent",
-  "keywords": [
-    "jupyter",
-    "jupyterlab",
-    "jupyterlab-extension",
-    "prime-agent",
-    "chat"
-  ],
-  "files": [
-    "style/**/*.{css,json}",
-    "lib/**/*.{js,ts,json}"
-  ],
+  "description": "Prime Agent chat panel for JupyterLab",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "style": "style/index.css",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/PrimeIntellect-ai/prime-agent"
-  },
   "scripts": {
-    "build": "jlpm run build:lib && jlpm run build:labextension",
-    "build:prod": "jlpm run build:lib && jlpm run build:labextension:prod",
-    "build:lib": "tsc -b",
+    "build": "tsc -b",
+    "build:prod": "tsc -b && npm run build:labextension",
     "build:labextension": "jupyter labextension build .",
-    "build:labextension:prod": "jupyter labextension build --minimize True .",
-    "clean": "jlpm run clean:lib && jlpm run clean:labextension",
-    "clean:lib": "rm -rf lib tsconfig.tsbuildinfo",
-    "clean:labextension": "rm -rf prime_agent_jupyterlab/labextension",
-    "install:extension": "jupyter labextension develop --overwrite .",
-    "watch": "run-p watch:lib watch:labextension",
-    "watch:lib": "tsc -w",
-    "watch:labextension": "jupyter labextension watch ."
+    "clean": "rimraf lib prime_agent_jupyterlab/labextension",
+    "watch": "tsc -b --watch"
   },
   "dependencies": {
     "@jupyterlab/application": "^4.0.0",
-    "@jupyterlab/apputils": "^4.0.0",
-    "@jupyterlab/ui-components": "^4.0.0"
+    "@jupyterlab/launcher": "^4.0.0",
+    "@jupyterlab/rendermime": "^4.0.0",
+    "@jupyterlab/ui-components": "^4.0.0",
+    "@lumino/widgets": "^2.0.0",
+    "@lumino/disposable": "^2.0.0",
+    "@lumino/signaling": "^2.0.0"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^4.0.0",
-    "@types/node": "^22.0.0",
-    "npm-run-all": "^4.1.5",
-    "typescript": ">=5.0.0"
+    "typescript": "^5.0.0",
+    "rimraf": "^5.0.0"
   },
   "jupyterlab": {
     "extension": true,
