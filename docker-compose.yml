@@ -12,10 +12,7 @@
 
 services:
   prime-agent:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: prime-agent:latest
+    image: ghcr.io/zhengr/prime-agent:main
     container_name: prime-agent
     volumes:
       # Mount your project directory into the container
