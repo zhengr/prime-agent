@@ -43,6 +43,7 @@ packages/coding-agent/binaries/
 syntax.jsonl
 out.jsonl
 *.html
+!jupyterlab-ext/**/*.html
 
 # Dev only
 prime-agent.sh

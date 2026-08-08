@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "prime-agent-jupyterlab"
+version = "0.1.0"
+description = "JupyterLab chat panel for Prime Agent"
+requires-python = ">=3.9"
+dependencies = [
+    "jupyterlab>=4.0,<5",
+    "tornado>=6.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jupyterlab>=4.0,<5",
+    "hatchling",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["prime_agent_jupyterlab"]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"prime_agent_jupyterlab/labextension" = "share/jupyter/labextensions/prime-agent-jupyterlab"
+
+[project.entry-points."serverextensions"]
+prime_agent_jupyterlab = "prime_agent_jupyterlab"
+
+[project.entry-points."jupyter_server.proxy_servers"]
+prime_agent = "prime_agent_jupyterlab._proxy"
+
+[tool.jupyter-packaging.options]
+skip-if-exists = ["prime_agent_jupyterlab/labextension"]
+
+[tool.jupyter-packaging.builder]
+factory = "hatch_jupyter_builder"

@@ -1,5 +1,6 @@
 # ============================================================================
 # Prime Agent — Multi-stage Dockerfile
+# Includes: prime-agent CLI + JupyterLab chat panel
 # ============================================================================
 
 # ---------------------------------------------------------------------------
@@ -36,16 +37,22 @@ RUN npm run build
 RUN npm prune --omit=dev
 
 # ---------------------------------------------------------------------------
-# Stage 2: Runtime (slim image with Node.js 22 + Python 3)
+# Stage 2: Runtime (Node.js 22 + Python 3 + JupyterLab)
 # ---------------------------------------------------------------------------
 FROM node:22-bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip python3-venv \
     git curl ca-certificates \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip3 install --break-system-packages --no-cache-dir \
-       ipykernel nest-asyncio tyro
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python runtime deps for prime-agent
+RUN pip3 install --break-system-packages --no-cache-dir \
+    ipykernel nest-asyncio tyro
+
+# Install JupyterLab + prime-agent extension deps
+RUN pip3 install --break-system-packages --no-cache-dir \
+    jupyterlab==4.6.* jupyter-server tornado
 
 # Copy entire node_modules (needed for externalized deps in bundle)
 COPY --from=builder /app/node_modules ./node_modules
@@ -66,14 +73,29 @@ COPY --from=builder /app/packages/tui/package.json          ./packages/tui/
 # Copy Python runtime
 COPY --from=builder /app/prime-agent-runtime/ ./prime-agent-runtime/
 
+# ---------------------------------------------------------------------------
+# Install the JupyterLab chat panel extension
+# ---------------------------------------------------------------------------
+WORKDIR /app/jupyterlab-ext
+COPY jupyterlab-ext/pyproject.toml ./
+COPY jupyterlab-ext/prime_agent_jupyterlab/ ./prime_agent_jupyterlab/
+COPY jupyterlab-ext/jupyter_server_config.py ./
+
+RUN pip3 install --break-system-packages --no-cache-dir -e .
+
+# JupyterLab config: load the extension
+COPY jupyterlab-ext/jupyter_server_config.py /app/jupyter_server_config.py
+
 # Set up working directory for user projects
 WORKDIR /workspace
 
 # Labels
 LABEL org.opencontainers.image.title="prime-agent"
-LABEL org.opencontainers.image.description="Prime Agent: A Self-Improving RLM Agent"
+LABEL org.opencontainers.image.description="Prime Agent with JupyterLab chat panel"
 LABEL org.opencontainers.image.source="https://github.com/zhengr/prime-agent"
 LABEL org.opencontainers.image.licenses="MIT"
 
-ENTRYPOINT ["node", "packages/coding-agent/dist/bundle/cli.js"]
-CMD ["--help"]
+# Default: start JupyterLab with the chat panel extension
+EXPOSE 8888
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--ServerApp.token=", "--ServerApp.password=", "--config=/app/jupyter_server_config.py"]
+CMD []

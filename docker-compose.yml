@@ -4,23 +4,29 @@
 # Usage:
 #   docker compose run --rm prime-agent          # interactive shell
 #   docker compose run --rm prime-agent "hello"  # single prompt
+#   docker compose up jupyterlab                 # JupyterLab + chat panel
 #   docker compose build                         # build image only
 #
 # Environment variables (set in .env or export before running):
+#   MIXTAO_API_KEY, MIXTAO_BASE_URL, MIXTAO_MODEL
 #   ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, etc.
 # ============================================================================
 
 services:
-  prime-agent:
+  # ---------------------------------------------------------------------------
+  # JupyterLab with chat panel (default)
+  # ---------------------------------------------------------------------------
+  jupyterlab:
     image: ghcr.io/zhengr/prime-agent:main
-    container_name: prime-agent
+    container_name: prime-agent-jupyterlab
+    ports:
+      - "8888:8888"
     volumes:
-      # Mount your project directory into the container
-      - .:/workspace
-      # Persist Prime Agent config/sessions across runs
+      - workspace:/workspace
       - prime-agent-config:/root/.prime/agent
     environment:
-      # Pass through API keys from host environment
+      - PRIME_AGENT_CWD=/workspace
+      # API keys
       - ANTHROPIC_API_KEY
       - OPENAI_API_KEY
       - GEMINI_API_KEY
@@ -35,9 +41,37 @@ services:
       - MIXTAO_MODEL
       # Node.js settings
       - NODE_OPTIONS=--max-old-space-size=4096
+    working_dir: /workspace
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # CLI mode (interactive shell or single prompt)
+  # ---------------------------------------------------------------------------
+  prime-agent:
+    image: ghcr.io/zhengr/prime-agent:main
+    container_name: prime-agent-cli
+    entrypoint: ["node", "packages/coding-agent/dist/bundle/cli.js"]
+    volumes:
+      - .:/workspace
+      - prime-agent-config:/root/.prime/agent
+    environment:
+      - ANTHROPIC_API_KEY
+      - OPENAI_API_KEY
+      - GEMINI_API_KEY
+      - GROQ_API_KEY
+      - XAI_API_KEY
+      - OPENROUTER_API_KEY
+      - MISTRAL_API_KEY
+      - PRIME_API_KEY
+      - HF_TOKEN
+      - MIXTAO_API_KEY
+      - MIXTAO_BASE_URL
+      - MIXTAO_MODEL
+      - NODE_OPTIONS=--max-old-space-size=4096
     stdin_open: true
     tty: true
     working_dir: /workspace
 
 volumes:
+  workspace:
   prime-agent-config:
