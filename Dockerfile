@@ -21,10 +21,13 @@ COPY packages/ai/package.json           ./packages/ai/
 COPY packages/coding-agent/package.json ./packages/coding-agent/
 COPY packages/tui/package.json          ./packages/tui/
 
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 # Copy remaining source
 COPY . .
+
+# Rebuild native addons (zeromq etc.) and run postinstall scripts
+RUN npm rebuild && node packages/coding-agent/postinstall.cjs
 
 # Build all packages (tui → ai → agent → coding-agent, including bundle)
 RUN npm run build
