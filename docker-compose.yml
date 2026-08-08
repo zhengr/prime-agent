@@ -30,6 +30,7 @@ services:
       - MISTRAL_API_KEY
       - PRIME_API_KEY
       - HF_TOKEN
+      - MIXTAO_API_KEY
       # Node.js settings
       - NODE_OPTIONS=--max-old-space-size=4096
     stdin_open: true

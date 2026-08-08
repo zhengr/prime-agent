@@ -20397,4 +20397,23 @@ export const MODELS = {
 			maxTokens: 131072,
 		} satisfies Model<"openai-completions">,
 	},
+	"mixtao": {
+		"mixtao": {
+			id: "mixtao",
+			name: "MixTao",
+			api: "openai-completions",
+			provider: "mixtao",
+			baseUrl: "http://YOUR_API_ENDPOINT",
+			reasoning: false,
+			input: ["text"],
+			cost: {
+				input: 0,
+				output: 0,
+				cacheRead: 0,
+				cacheWrite: 0,
+			},
+			contextWindow: 128000,
+			maxTokens: 8192,
+		} satisfies Model<"openai-completions">,
+	},
 } as const;
