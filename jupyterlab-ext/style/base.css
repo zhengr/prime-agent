@@ -1,31 +1,32 @@
-/* ====================================================================
-   Prime Agent JupyterLab sidebar panel — references jupyter-ai design
-   Uses JupyterLab CSS variables for theme integration
-   ==================================================================== */
+/*
+ * Prime Agent Sidebar — references jupyter-chat patterns
+ * Uses JupyterLab CSS variables for theme compatibility
+ * Pattern: header + scroll container + input area + writing indicator
+ */
 
-/* ─── Widget container ────────────────────────────────────────────── */
-
+/* ─── Root Container ─────────────────────────────────────────── */
 .prime-agent-widget {
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
+  width: 100%;
+  background: var(--jp-layout-color0);
+  color: var(--jp-ui-font-color1);
   font-family: var(--jp-ui-font-family);
   font-size: var(--jp-ui-font-size1);
-  color: var(--jp-ui-font-color1);
+  overflow: hidden;
 }
 
-/* ─── Header ──────────────────────────────────────────────────────── */
-
+/* ─── Header ─────────────────────────────────────────────────── */
 .prime-agent-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 8px 12px;
   border-bottom: 1px solid var(--jp-border-color1);
   background: var(--jp-layout-color1);
   flex-shrink: 0;
-  min-height: 36px;
+  min-height: 40px;
 }
 
 .prime-agent-header-title {
@@ -38,7 +39,7 @@
 }
 
 .prime-agent-icon {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1;
 }
 
@@ -51,16 +52,16 @@
 }
 
 .prime-agent-status-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--jp-error-color1);
-  transition: background 0.3s ease;
+  transition: background 0.3s;
   flex-shrink: 0;
 }
 
 .prime-agent-status-dot.connected {
-  background: var(--jp-success-color1, #2ecc71);
+  background: var(--jp-success-color1, #2196f3);
 }
 
 .prime-agent-status-dot.disconnected {
@@ -68,86 +69,136 @@
 }
 
 .prime-agent-status-text {
-  white-space: nowrap;
+  display: none;
 }
 
-/* ─── Messages area ───────────────────────────────────────────────── */
+@media (min-width: 400px) {
+  .prime-agent-status-text {
+    display: inline;
+  }
+}
 
-.prime-agent-messages {
+/* ─── Scroll Container (jupyter-chat pattern) ────────────────── */
+.prime-agent-scroll-container {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
-  padding: 12px;
+  overflow-anchor: none;
+  position: relative;
+}
+
+.prime-agent-messages {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  scroll-behavior: smooth;
+  gap: 2px;
+  padding: 12px;
+  min-height: 100%;
 }
 
-/* Scrollbar styling */
-.prime-agent-messages::-webkit-scrollbar {
-  width: 5px;
+/* ─── Welcome Message ────────────────────────────────────────── */
+.prime-agent-welcome {
+  padding: 20px 12px;
+  margin-bottom: 8px;
 }
 
-.prime-agent-messages::-webkit-scrollbar-track {
-  background: transparent;
+.prime-agent-welcome h1 {
+  font-size: var(--jp-ui-font-size2);
+  font-weight: 600;
+  color: var(--jp-ui-font-color0);
+  margin: 0 0 8px 0;
 }
 
-.prime-agent-messages::-webkit-scrollbar-thumb {
-  background: var(--jp-border-color2);
-  border-radius: 3px;
+.prime-agent-welcome h2 {
+  font-size: var(--jp-ui-font-size1);
+  font-weight: 600;
+  color: var(--jp-ui-font-color0);
+  margin: 12px 0 6px 0;
 }
 
-.prime-agent-messages::-webkit-scrollbar-thumb:hover {
-  background: var(--jp-border-color3);
+.prime-agent-welcome p {
+  margin: 4px 0;
+  color: var(--jp-ui-font-color1);
 }
 
-/* ─── Message bubbles ─────────────────────────────────────────────── */
+.prime-agent-welcome ul,
+.prime-agent-welcome ol {
+  margin: 6px 0;
+  padding-left: 20px;
+}
 
+.prime-agent-welcome li {
+  margin: 3px 0;
+  color: var(--jp-ui-font-color1);
+}
+
+.prime-agent-welcome hr {
+  border: none;
+  border-top: 1px solid var(--jp-border-color2);
+  margin: 12px 0;
+}
+
+/* ─── Message Layout ─────────────────────────────────────────── */
 .prime-agent-message {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
   max-width: 100%;
+  padding: 6px 0;
 }
 
 .prime-agent-message.prime-agent-user {
-  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .prime-agent-message.prime-agent-assistant {
-  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-.prime-agent-message.prime-agent-system {
-  justify-content: center;
+/* Message header (jupyter-chat pattern: avatar + name + time) */
+.prime-agent-msg-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  padding: 0 4px;
 }
 
 .prime-agent-avatar {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: var(--jp-brand-color2);
-  color: white;
+  background: var(--jp-brand-color1);
+  color: var(--jp-ui-inverse-font-color0);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   flex-shrink: 0;
-  margin-top: 2px;
 }
 
+.prime-agent-msg-name {
+  font-size: var(--jp-ui-font-size0);
+  font-weight: 600;
+  color: var(--jp-ui-font-color1);
+}
+
+.prime-agent-msg-time {
+  font-size: 10px;
+  color: var(--jp-ui-font-color3);
+  margin-left: auto;
+}
+
+/* ─── Message Bubbles ────────────────────────────────────────── */
 .prime-agent-bubble {
   padding: 8px 12px;
   border-radius: 12px;
-  max-width: 85%;
+  max-width: 100%;
   word-wrap: break-word;
   overflow-wrap: break-word;
   line-height: 1.5;
 }
 
 .prime-agent-user-bubble {
-  background: var(--jp-brand-color1);
-  color: white;
+  background: var(--jp-brand-color3);
+  color: var(--jp-ui-font-color0);
   border-bottom-right-radius: 4px;
 }
 
@@ -161,20 +212,15 @@
   background: var(--jp-layout-color3);
   color: var(--jp-ui-font-color2);
   font-size: var(--jp-ui-font-size0);
-  padding: 6px 10px;
+  text-align: center;
   border-radius: 8px;
-  max-width: 100%;
-  white-space: pre-line;
+  padding: 6px 12px;
+  align-self: center;
 }
 
-/* ─── Markdown content in assistant messages ──────────────────────── */
-
+/* ─── Markdown Content in Bubbles ────────────────────────────── */
 .prime-agent-assistant-bubble p {
-  margin: 0 0 8px 0;
-}
-
-.prime-agent-assistant-bubble p:last-child {
-  margin-bottom: 0;
+  margin: 4px 0;
 }
 
 .prime-agent-assistant-bubble ul,
@@ -189,30 +235,47 @@
 
 .prime-agent-assistant-bubble strong {
   font-weight: 600;
-  color: var(--jp-ui-font-color0);
 }
 
 .prime-agent-assistant-bubble em {
   font-style: italic;
 }
 
-.prime-agent-assistant-bubble h1,
-.prime-agent-assistant-bubble h2,
-.prime-agent-assistant-bubble h3,
-.prime-agent-assistant-bubble h4 {
-  margin: 8px 0 4px 0;
-  color: var(--jp-ui-font-color0);
+.prime-agent-assistant-bubble code {
+  font-family: var(--jp-code-font-family);
+  font-size: var(--jp-code-font-size);
+  background: var(--jp-layout-color3);
+  padding: 1px 4px;
+  border-radius: 3px;
 }
 
-.prime-agent-assistant-bubble h1 { font-size: 1.2em; }
-.prime-agent-assistant-bubble h2 { font-size: 1.1em; }
-.prime-agent-assistant-bubble h3 { font-size: 1em; }
+.prime-agent-assistant-bubble pre {
+  position: relative;
+  margin: 8px 0;
+  background: var(--jp-layout-color3);
+  border: 1px solid var(--jp-border-color2);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.prime-agent-assistant-bubble pre code {
+  display: block;
+  padding: 12px;
+  background: transparent;
+  border-radius: 0;
+}
+
+.prime-agent-assistant-bubble blockquote {
+  border-left: 3px solid var(--jp-brand-color2);
+  margin: 6px 0;
+  padding: 4px 12px;
+  color: var(--jp-ui-font-color2);
+}
 
 .prime-agent-assistant-bubble table {
   border-collapse: collapse;
   margin: 8px 0;
   font-size: var(--jp-ui-font-size0);
-  width: 100%;
 }
 
 .prime-agent-assistant-bubble th,
@@ -223,192 +286,289 @@
 }
 
 .prime-agent-assistant-bubble th {
-  background: var(--jp-layout-color3);
+  background: var(--jp-layout-color2);
   font-weight: 600;
 }
 
-.prime-agent-assistant-bubble blockquote {
-  border-left: 3px solid var(--jp-brand-color2);
-  margin: 8px 0;
-  padding: 4px 12px;
-  color: var(--jp-ui-font-color2);
-  background: var(--jp-layout-color3);
-  border-radius: 0 4px 4px 0;
+.prime-agent-assistant-bubble a {
+  color: var(--jp-content-link-color);
+  text-decoration: none;
 }
 
-/* ─── Code blocks ─────────────────────────────────────────────────── */
+.prime-agent-assistant-bubble a:hover {
+  text-decoration: underline;
+}
 
+/* ─── Fallback Plain Text Rendering ──────────────────────────── */
+.prime-agent-markdown-text {
+  line-height: 1.5;
+}
+
+.prime-agent-inline-code {
+  font-family: var(--jp-code-font-family);
+  font-size: var(--jp-code-font-size);
+  background: var(--jp-layout-color3);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* ─── Code Block (fallback) ──────────────────────────────────── */
 .prime-agent-code-block {
   position: relative;
+  margin: 8px 0;
   background: var(--jp-layout-color3);
   border: 1px solid var(--jp-border-color2);
   border-radius: 6px;
-  margin: 8px 0;
-  overflow-x: auto;
-}
-
-.prime-agent-code-block code {
-  display: block;
-  padding: 10px 12px;
-  font-family: var(--jp-code-font-family);
-  font-size: var(--jp-code-font-size);
-  line-height: 1.5;
-  white-space: pre;
   overflow-x: auto;
 }
 
 .prime-agent-code-lang {
   position: absolute;
   top: 4px;
-  right: 8px;
+  left: 8px;
   font-size: 10px;
   color: var(--jp-ui-font-color3);
-  text-transform: uppercase;
   font-family: var(--jp-ui-font-family);
 }
 
-.prime-agent-inline-code {
-  background: var(--jp-layout-color3);
-  border: 1px solid var(--jp-border-color2);
-  border-radius: 3px;
-  padding: 1px 4px;
+.prime-agent-code-block code {
+  display: block;
+  padding: 12px;
   font-family: var(--jp-code-font-family);
-  font-size: 0.9em;
+  font-size: var(--jp-code-font-size);
+  color: var(--jp-ui-font-color1);
 }
 
-/* ─── Copy button ─────────────────────────────────────────────────── */
+/* ─── Code Toolbar (jupyter-chat pattern) ────────────────────── */
+.prime-agent-code-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 4px 8px;
+  background: var(--jp-layout-color3);
+  border-bottom: 1px solid var(--jp-border-color2);
+  border-radius: 6px 6px 0 0;
+}
+
+.prime-agent-code-lang-label {
+  font-size: 10px;
+  color: var(--jp-ui-font-color3);
+  margin-right: auto;
+  font-family: var(--jp-ui-font-family);
+}
 
 .prime-agent-copy-btn {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  background: var(--jp-layout-color1);
-  border: 1px solid var(--jp-border-color2);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border: none;
   border-radius: 4px;
-  padding: 2px 8px;
-  font-size: 11px;
-  font-family: var(--jp-ui-font-family);
+  background: transparent;
   color: var(--jp-ui-font-color2);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  z-index: 1;
-}
-
-.prime-agent-code-block:hover .prime-agent-copy-btn {
-  opacity: 1;
+  font-size: 11px;
+  font-family: var(--jp-ui-font-family);
+  transition: all 0.15s;
 }
 
 .prime-agent-copy-btn:hover {
-  background: var(--jp-layout-color2);
-  color: var(--jp-ui-font-color1);
+  background: var(--jp-layout-color1);
+  color: var(--jp-ui-font-color0);
 }
 
 .prime-agent-copy-btn.copied {
-  color: var(--jp-success-color1, #2ecc71);
-  border-color: var(--jp-success-color1, #2ecc71);
+  color: var(--jp-success-color1, #2196f3);
 }
 
-/* ─── Input area ──────────────────────────────────────────────────── */
-
-.prime-agent-input-area {
-  padding: 8px 12px 12px;
-  border-top: 1px solid var(--jp-border-color1);
-  background: var(--jp-layout-color1);
+.prime-agent-copy-btn svg {
   flex-shrink: 0;
 }
 
-.prime-agent-input {
-  width: 100%;
-  min-height: 38px;
-  max-height: 150px;
-  padding: 8px 10px;
+/* ─── Writing Indicator (jupyter-chat pattern) ───────────────── */
+.prime-agent-writing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  min-height: 20px;
+}
+
+.prime-agent-writing-dots {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.prime-agent-writing-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--jp-ui-font-color3);
+  animation: prime-agent-bounce 1.4s infinite ease-in-out;
+}
+
+.prime-agent-writing-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.prime-agent-writing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.prime-agent-writing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes prime-agent-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.prime-agent-writing-text {
+  font-size: 11px;
+  color: var(--jp-ui-font-color3);
+}
+
+/* ─── Input Area ─────────────────────────────────────────────── */
+.prime-agent-input-area {
+  padding: 8px 12px 12px;
+  border-top: 1px solid var(--jp-border-color1);
+  background: var(--jp-layout-color0);
+  flex-shrink: 0;
+}
+
+.prime-agent-input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  background: var(--jp-layout-color1);
   border: 1px solid var(--jp-border-color2);
-  border-radius: 8px;
+  border-radius: 12px;
+  padding: 6px 8px;
+  transition: border-color 0.2s;
+}
+
+.prime-agent-input-wrapper:focus-within {
+  border-color: var(--jp-brand-color1);
+  box-shadow: 0 0 0 1px var(--jp-brand-color1);
+}
+
+.prime-agent-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--jp-ui-font-color0);
   font-family: var(--jp-ui-font-family);
   font-size: var(--jp-ui-font-size1);
-  color: var(--jp-ui-font-color1);
-  background: var(--jp-layout-color0);
   resize: none;
-  outline: none;
+  min-height: 20px;
+  max-height: 150px;
   line-height: 1.4;
-  transition: border-color 0.15s ease;
-  box-sizing: border-box;
-}
-
-.prime-agent-input:focus {
-  border-color: var(--jp-brand-color1);
-}
-
-.prime-agent-input:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  padding: 2px 4px;
 }
 
 .prime-agent-input::placeholder {
   color: var(--jp-ui-font-color3);
 }
 
-/* ─── Button row ──────────────────────────────────────────────────── */
+.prime-agent-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
+/* ─── Buttons ────────────────────────────────────────────────── */
 .prime-agent-btn-row {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 6px;
-  gap: 6px;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .prime-agent-send-btn,
 .prime-agent-stop-btn {
-  padding: 5px 14px;
-  border-radius: 6px;
-  font-family: var(--jp-ui-font-family);
-  font-size: var(--jp-ui-font-size1);
-  font-weight: 500;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
   border: none;
-  transition: background 0.15s ease, transform 0.1s ease;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: var(--jp-ui-font-family);
+  transition: all 0.15s;
 }
 
 .prime-agent-send-btn {
   background: var(--jp-brand-color1);
-  color: white;
+  color: var(--jp-ui-inverse-font-color0);
 }
 
 .prime-agent-send-btn:hover {
   background: var(--jp-brand-color0);
 }
 
-.prime-agent-send-btn:active {
-  transform: scale(0.97);
-}
-
 .prime-agent-send-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
+}
+
+.prime-agent-send-btn svg,
+.prime-agent-stop-btn svg {
+  flex-shrink: 0;
 }
 
 .prime-agent-stop-btn {
   background: var(--jp-error-color1);
-  color: white;
+  color: var(--jp-ui-inverse-font-color0);
 }
 
 .prime-agent-stop-btn:hover {
-  background: var(--jp-error-color0);
+  background: var(--jp-error-color0, #d32f2f);
 }
 
-.prime-agent-stop-btn:active {
-  transform: scale(0.97);
+/* ─── Scrollbar Styling ──────────────────────────────────────── */
+.prime-agent-scroll-container::-webkit-scrollbar {
+  width: 6px;
 }
 
-.prime-agent-btn-text {
-  pointer-events: none;
+.prime-agent-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-/* ─── Tab icon ────────────────────────────────────────────────────── */
+.prime-agent-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--jp-border-color2);
+  border-radius: 3px;
+}
 
-.prime-agent-tab-icon::before {
-  content: "⚡";
-  font-size: 14px;
+.prime-agent-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--jp-border-color3);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 350px) {
+  .prime-agent-header {
+    padding: 6px 8px;
+  }
+
+  .prime-agent-messages {
+    padding: 8px;
+  }
+
+  .prime-agent-input-area {
+    padding: 6px 8px 8px;
+  }
+
+  .prime-agent-bubble {
+    padding: 6px 10px;
+    font-size: var(--jp-ui-font-size0);
+  }
 }
