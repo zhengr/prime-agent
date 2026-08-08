@@ -2321,6 +2321,21 @@ async function generateModels() {
 		}));
 	allModels.push(...azureOpenAiModels);
 
+	// Add mixtao provider (OpenAI-compatible, env-var driven baseUrl)
+	allModels.push({
+		id: "mixtao",
+		name: "MixTao",
+		api: "openai-completions" as const,
+		provider: "mixtao",
+		// @ts-expect-error envBaseUrl is a generation-only field
+		envBaseUrl: "MIXTAO_BASE_URL",
+		reasoning: false,
+		input: ["text"],
+		cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+		contextWindow: 128000,
+		maxTokens: 8192,
+	});
+
 	for (const model of allModels) {
 		applyThinkingLevelMetadata(model);
 	}
@@ -2361,8 +2376,10 @@ export const MODELS = {
 			output += `\t\t\tname: "${model.name}",\n`;
 			output += `\t\t\tapi: "${model.api}",\n`;
 			output += `\t\t\tprovider: "${model.provider}",\n`;
-			if (model.baseUrl !== undefined) {
-				output += `\t\t\tbaseUrl: "${model.baseUrl}",\n`;
+			if ((model as any).envBaseUrl) {
+				output += `			baseUrl: process.env.${(model as any).envBaseUrl}!,\n`;
+			} else if (model.baseUrl !== undefined) {
+				output += `			baseUrl: "${model.baseUrl}",\n`;
 			}
 			if (model.headers) {
 				output += `\t\t\theaders: ${JSON.stringify(model.headers)},\n`;
