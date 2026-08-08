@@ -41,6 +41,8 @@ RUN npm prune --omit=dev
 # ---------------------------------------------------------------------------
 FROM node:22-bookworm-slim
 
+WORKDIR /app
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip python3-venv \
     git curl ca-certificates \
