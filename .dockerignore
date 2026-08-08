@@ -1,0 +1,74 @@
+# Dependencies (rebuilt in container)
+node_modules/
+
+# Build artifacts (rebuilt in container)
+packages/*/dist/
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Editor
+.vscode/
+.zed/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+*.cpuprofile
+
+# Test/coverage
+coverage/
+.nyc_output/
+__pycache__/
+*.pyc
+
+# CI artifacts
+packages/coding-agent/binaries/
+
+# IDE/Editor state
+syntax.jsonl
+out.jsonl
+*.html
+
+# Dev only
+prime-agent.sh
+scripts/bench-*
+scripts/boot-bench*
+scripts/browser-smoke-*
+scripts/check-installer-*
+scripts/check-browser-smoke*
+scripts/cost.ts
+scripts/preview-installer-splash.sh
+scripts/profile-coding-agent-node.mjs
+scripts/render-logo.py
+scripts/session-context-stats.mjs
+scripts/session-transcripts.ts
+scripts/stats.ts
+scripts/tool-stats.ts
+scripts/read-tool-stats.mjs
+scripts/edit-tool-stats.mjs
+
+# Husky
+.husky/
+
+# Plans/temp
+plans/
+todo.md
+collect.sh
+.worktrees/
+.prime/agent/
+.kernel-venv/

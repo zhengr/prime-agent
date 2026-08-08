@@ -1,0 +1,43 @@
+# ============================================================================
+# Prime Agent — Docker Compose
+# ============================================================================
+# Usage:
+#   docker compose run --rm prime-agent          # interactive shell
+#   docker compose run --rm prime-agent "hello"  # single prompt
+#   docker compose build                         # build image only
+#
+# Environment variables (set in .env or export before running):
+#   ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, etc.
+# ============================================================================
+
+services:
+  prime-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: prime-agent:latest
+    container_name: prime-agent
+    volumes:
+      # Mount your project directory into the container
+      - .:/workspace
+      # Persist Prime Agent config/sessions across runs
+      - prime-agent-config:/root/.prime/agent
+    environment:
+      # Pass through API keys from host environment
+      - ANTHROPIC_API_KEY
+      - OPENAI_API_KEY
+      - GEMINI_API_KEY
+      - GROQ_API_KEY
+      - XAI_API_KEY
+      - OPENROUTER_API_KEY
+      - MISTRAL_API_KEY
+      - PRIME_API_KEY
+      - HF_TOKEN
+      # Node.js settings
+      - NODE_OPTIONS=--max-old-space-size=4096
+    stdin_open: true
+    tty: true
+    working_dir: /workspace
+
+volumes:
+  prime-agent-config:
