@@ -31,6 +31,8 @@ services:
       - PRIME_API_KEY
       - HF_TOKEN
       - MIXTAO_API_KEY
+      - MIXTAO_BASE_URL
+      - MIXTAO_MODEL
       # Node.js settings
       - NODE_OPTIONS=--max-old-space-size=4096
     stdin_open: true
