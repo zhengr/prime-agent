@@ -1,6 +1,6 @@
 # ============================================================================
 # Prime Agent — Multi-stage Dockerfile
-# Includes: prime-agent CLI + JupyterLab chat panel
+# Includes: prime-agent CLI + JupyterLab chat panel (sidebar)
 # ============================================================================
 
 # ---------------------------------------------------------------------------
@@ -30,8 +30,19 @@ COPY . .
 # Rebuild native addons (zeromq etc.) and run postinstall scripts
 RUN npm rebuild && node packages/coding-agent/postinstall.cjs
 
-# Build all packages (tui → ai → agent → coding-agent, including bundle)
+# Build all packages (tui -> ai -> agent -> coding-agent, including bundle)
 RUN npm run build
+
+# Build JupyterLab frontend extension
+WORKDIR /app/jupyterlab-ext
+COPY jupyterlab-ext/package.json jupyterlab-ext/package-lock.json ./
+RUN npm ci --ignore-scripts
+COPY jupyterlab-ext/tsconfig.json ./
+COPY jupyterlab-ext/src ./src
+COPY jupyterlab-ext/style ./style
+COPY jupyterlab-ext/prime_agent_jupyterlab/labextension/package.json ./prime_agent_jupyterlab/labextension/
+RUN npm run build
+WORKDIR /app
 
 # Remove devDependencies and prune native bindings to reduce copy size
 RUN npm prune --omit=dev
@@ -54,7 +65,7 @@ RUN pip3 install --break-system-packages --no-cache-dir \
 
 # Install JupyterLab + prime-agent extension deps
 RUN pip3 install --break-system-packages --no-cache-dir \
-    jupyterlab==4.6.* jupyter-server tornado
+    jupyterlab==4.6.* jupyter-server tornado hatchling hatch-jupyter-builder
 
 # Copy entire node_modules (needed for externalized deps in bundle)
 COPY --from=builder /app/node_modules ./node_modules
@@ -76,12 +87,14 @@ COPY --from=builder /app/packages/tui/package.json          ./packages/tui/
 COPY --from=builder /app/prime-agent-runtime/ ./prime-agent-runtime/
 
 # ---------------------------------------------------------------------------
-# Install the JupyterLab chat panel extension
+# Install the JupyterLab chat panel extension (sidebar)
 # ---------------------------------------------------------------------------
 WORKDIR /app/jupyterlab-ext
 COPY jupyterlab-ext/pyproject.toml ./
 COPY jupyterlab-ext/prime_agent_jupyterlab/ ./prime_agent_jupyterlab/
 COPY jupyterlab-ext/jupyter_server_config.py ./
+COPY --from=builder /app/jupyterlab-ext/node_modules ./node_modules
+COPY --from=builder /app/jupyterlab-ext/lib ./lib
 
 RUN pip3 install --break-system-packages --no-cache-dir -e .
 
@@ -93,7 +106,7 @@ WORKDIR /workspace
 
 # Labels
 LABEL org.opencontainers.image.title="prime-agent"
-LABEL org.opencontainers.image.description="Prime Agent with JupyterLab chat panel"
+LABEL org.opencontainers.image.description="Prime Agent with JupyterLab sidebar chat panel"
 LABEL org.opencontainers.image.source="https://github.com/zhengr/prime-agent"
 LABEL org.opencontainers.image.licenses="MIT"
 
