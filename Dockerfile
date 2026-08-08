@@ -98,12 +98,20 @@ COPY --from=builder /app/prime-agent-runtime/ ./prime-agent-runtime/
 WORKDIR /app/jupyterlab-ext
 COPY jupyterlab-ext/pyproject.toml ./
 COPY jupyterlab-ext/install.json ./
+COPY jupyterlab-ext/package.json jupyterlab-ext/package-lock.json ./
+COPY jupyterlab-ext/tsconfig.json ./
+COPY jupyterlab-ext/src ./src
+COPY jupyterlab-ext/style ./style
 COPY jupyterlab-ext/jupyter_server_config.py ./
-COPY jupyterlab-ext/prime_agent_jupyterlab/ ./prime_agent_jupyterlab/
+COPY jupyterlab-ext/prime_agent_jupyterlab/__init__.py ./prime_agent_jupyterlab/__init__.py
+COPY jupyterlab-ext/prime_agent_jupyterlab/labextension/package.json ./prime_agent_jupyterlab/labextension/
 COPY --from=builder /app/jupyterlab-ext/node_modules ./node_modules
-COPY --from=builder /app/jupyterlab-ext/lib ./lib
 
-RUN pip3 install --break-system-packages --no-cache-dir -e .
+# Build TypeScript + labextension in runtime stage
+RUN npx tsc -b && \
+    JUPYTERLAB_STAGING=$(python3 -c "import jupyterlab; print(jupyterlab.__path__[0] + '/staging')") && \
+    npx @jupyterlab/builder --core-path "$JUPYTERLAB_STAGING" . && \
+    pip3 install --break-system-packages --no-cache-dir -e .
 
 # Copy config
 COPY jupyterlab-ext/jupyter_server_config.py /app/jupyter_server_config.py
