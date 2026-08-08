@@ -273,7 +273,9 @@ export class PrimeAgentWidget extends Widget {
   private _handleMessage(msg: any): void {
     switch (msg.type) {
       case "event":
-        this._appendStream(msg.data);
+        // Backend sends {type:"event", kind:"...", data:{text:"..."}}
+        // msg.data = {kind:"...", data:{text:"..."}} → get text from data.data.text or data.text
+        this._appendStream(msg.data?.data || msg.data);
         break;
       case "done":
         this._finishStream(msg.exitCode);
@@ -545,8 +547,8 @@ export class PrimeAgentWidget extends Widget {
     // Show writing indicator
     this._writingIndicator.style.display = "flex";
 
-    // Send via WebSocket
-    this._ws.send(JSON.stringify({ type: "prompt", data: text }));
+    // Send via WebSocket (backend expects "text" field)
+    this._ws.send(JSON.stringify({ type: "prompt", text }));
   }
 
   private _stopAgent(): void {
