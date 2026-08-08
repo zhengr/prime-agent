@@ -106,28 +106,3 @@ Our agent and TUI is built on top of [`pi`](https://github.com/earendil-works/pi
 ## License
 
 Prime Agent is fully open source and released under the [MIT License](LICENSE).
-
-
----
-
-## JupyterLab Extension / JupyterLab 扩展
-
-> **English is the default. 中文说明见下方。**
-
-A sidebar chat panel referencing [jupyter-chat](https://github.com/jupyterlab/jupyter-chat) patterns.
-基于 `jupyter-chat` 架构的侧边栏聊天面板。
-
-### Key Features / 主要功能
-
-- **Markdown Rendering** (`IRenderMimeRegistry`): Welcome messages and assistant responses.
-- **Message Bubbles**: User (blue) and assistant (gray) bubbles.
-- **Code Toolbar**: Language tag + one-click copy button (SVG icon).
-- **Writing Indicator**: Animated dots + "Assistant is typing...".
-- **Scroll Container**: `MutationObserver` auto-scroll.
-- **Theme Variables**: All colors use `--jp-*` CSS variables.
-
-### WebSocket Protocol / 协议
-`Client → {"type":"prompt","text":"..."}` | `Server → {"type":"event","kind":"text","data":{"text":"..."}}`
-### Reference / 参考
-- [jupyter-chat](https://github.com/jupyterlab/jupyter-chat)
-- [jupyterlab/rendermime](https://github.com/jupyterlab/jupyterlab)
