@@ -354,7 +354,7 @@ export class PrimeAgentWidget extends Widget {
 
   private _connectWebSocket(): void {
     const proto = location.protocol === "https:" ? "wss:" : "ws:";
-    const url = `${proto}//${location.host}/prime_agent/ws`;
+    const url = `${proto}//${location.host}/api/prime-agent/chat/default`;
     this._setStatus("connecting");
 
     try {
