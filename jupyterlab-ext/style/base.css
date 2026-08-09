@@ -1,35 +1,39 @@
 /*
- * Prime Agent Sidebar — references jupyter-chat patterns
- * Uses JupyterLab CSS variables for theme compatibility
- * Pattern: header + scroll container + input area + writing indicator
+ * Prime Agent JupyterLab Chat — jupyter-chat-aligned styles
+ *
+ * All colors use --jp-* CSS variables for JupyterLab theme integration.
+ * Class names prefixed with `pa-chat-` to avoid conflicts.
  */
 
-/* ─── Root Container ─────────────────────────────────────────── */
-.prime-agent-widget {
+/* ================================================================ */
+/*  Widget root                                                       */
+/* ================================================================ */
+
+.pa-chat-widget {
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
-  background: var(--jp-layout-color0);
+  background: var(--jp-layout-color1);
   color: var(--jp-ui-font-color1);
   font-family: var(--jp-ui-font-family);
   font-size: var(--jp-ui-font-size1);
-  overflow: hidden;
+  line-height: 1.5;
 }
 
-/* ─── Header ─────────────────────────────────────────────────── */
-.prime-agent-header {
+/* ================================================================ */
+/*  Header                                                            */
+/* ================================================================ */
+
+.pa-chat-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 8px 12px;
   border-bottom: 1px solid var(--jp-border-color1);
   background: var(--jp-layout-color1);
   flex-shrink: 0;
-  min-height: 40px;
 }
 
-.prime-agent-header-title {
+.pa-chat-header-title {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -38,389 +42,430 @@
   color: var(--jp-ui-font-color0);
 }
 
-.prime-agent-icon {
-  font-size: 16px;
-  line-height: 1;
+.pa-chat-title-icon {
+  font-size: 18px;
 }
 
-.prime-agent-header-status {
+.pa-chat-header-status {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: var(--jp-ui-font-size0);
-  color: var(--jp-ui-font-color2);
+  gap: 6px;
+  margin-top: 2px;
 }
 
-.prime-agent-status-dot {
+.pa-chat-status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--jp-error-color1);
-  transition: background 0.3s;
+  background: var(--jp-warn-color1);
   flex-shrink: 0;
 }
 
-.prime-agent-status-dot.connected {
-  background: var(--jp-success-color1, #2196f3);
+.pa-chat-status-text {
+  font-size: 11px;
+  color: var(--jp-ui-font-color2);
 }
 
-.prime-agent-status-dot.disconnected {
-  background: var(--jp-error-color1);
-}
+/* ================================================================ */
+/*  Scroll container                                                  */
+/* ================================================================ */
 
-.prime-agent-status-text {
-  display: none;
-}
-
-@media (min-width: 400px) {
-  .prime-agent-status-text {
-    display: inline;
-  }
-}
-
-/* ─── Scroll Container (jupyter-chat pattern) ────────────────── */
-.prime-agent-scroll-container {
+.pa-chat-scroll-container {
   flex: 1;
   overflow-y: auto;
-  overflow-anchor: none;
+  overflow-x: hidden;
   position: relative;
+  scroll-behavior: smooth;
 }
 
-.prime-agent-messages {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px;
-  min-height: 100%;
+.pa-chat-scroll-container::-webkit-scrollbar {
+  width: 6px;
 }
 
-/* ─── Welcome Message ────────────────────────────────────────── */
-.prime-agent-welcome {
-  padding: 20px 12px;
-  margin-bottom: 8px;
+.pa-chat-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.prime-agent-welcome h1 {
-  font-size: var(--jp-ui-font-size2);
-  font-weight: 600;
-  color: var(--jp-ui-font-color0);
-  margin: 0 0 8px 0;
+.pa-chat-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--jp-border-color2);
+  border-radius: 3px;
 }
 
-.prime-agent-welcome h2 {
+.pa-chat-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--jp-border-color3);
+}
+
+/* ================================================================ */
+/*  Welcome message                                                   */
+/* ================================================================ */
+
+.pa-chat-welcome {
+  padding: 16px;
+  color: var(--jp-ui-font-color2);
   font-size: var(--jp-ui-font-size1);
-  font-weight: 600;
+  border-bottom: 1px solid var(--jp-border-color2);
+}
+
+.pa-chat-welcome h1,
+.pa-chat-welcome h2,
+.pa-chat-welcome h3 {
   color: var(--jp-ui-font-color0);
-  margin: 12px 0 6px 0;
+  margin-top: 8px;
+  margin-bottom: 4px;
 }
 
-.prime-agent-welcome p {
+.pa-chat-welcome p {
   margin: 4px 0;
-  color: var(--jp-ui-font-color1);
 }
 
-.prime-agent-welcome ul,
-.prime-agent-welcome ol {
-  margin: 6px 0;
-  padding-left: 20px;
+.pa-chat-welcome code {
+  background: var(--jp-layout-color2);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: var(--jp-code-font-family);
+  font-size: var(--jp-code-font-size);
 }
 
-.prime-agent-welcome li {
-  margin: 3px 0;
-  color: var(--jp-ui-font-color1);
-}
-
-.prime-agent-welcome hr {
+.pa-chat-welcome hr {
   border: none;
   border-top: 1px solid var(--jp-border-color2);
   margin: 12px 0;
 }
 
-/* ─── Message Layout ─────────────────────────────────────────── */
-.prime-agent-message {
+/* ================================================================ */
+/*  Messages box                                                      */
+/* ================================================================ */
+
+.pa-chat-messages-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 8px 48px;
+}
+
+/* ================================================================ */
+/*  Message                                                           */
+/* ================================================================ */
+
+.pa-chat-message {
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  padding: 6px 0;
 }
 
-.prime-agent-message.prime-agent-user {
-  align-items: flex-end;
+.pa-chat-current-user .pa-chat-message-bubble {
+  align-self: flex-end;
+  max-width: 85%;
 }
 
-.prime-agent-message.prime-agent-assistant {
-  align-items: flex-start;
+.pa-chat-other-user .pa-chat-message-bubble {
+  align-self: flex-start;
+  max-width: 90%;
 }
 
-/* Message header (jupyter-chat pattern: avatar + name + time) */
-.prime-agent-msg-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
-  padding: 0 4px;
-}
-
-.prime-agent-avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--jp-brand-color1);
-  color: var(--jp-ui-inverse-font-color0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  flex-shrink: 0;
-}
-
-.prime-agent-msg-name {
-  font-size: var(--jp-ui-font-size0);
-  font-weight: 600;
-  color: var(--jp-ui-font-color1);
-}
-
-.prime-agent-msg-time {
-  font-size: 10px;
-  color: var(--jp-ui-font-color3);
-  margin-left: auto;
-}
-
-/* ─── Message Bubbles ────────────────────────────────────────── */
-.prime-agent-bubble {
-  padding: 8px 12px;
+.pa-chat-message-bubble {
   border-radius: 12px;
-  max-width: 100%;
-  word-wrap: break-word;
+  padding: 10px 14px;
+  position: relative;
+  word-break: break-word;
   overflow-wrap: break-word;
-  line-height: 1.5;
 }
 
-.prime-agent-user-bubble {
-  background: var(--jp-brand-color3);
-  color: var(--jp-ui-font-color0);
+.pa-chat-current-user .pa-chat-message-bubble {
+  background: var(--jp-brand-color1);
+  color: var(--jp-ui-inverse-font-color1);
   border-bottom-right-radius: 4px;
 }
 
-.prime-agent-assistant-bubble {
+.pa-chat-other-user .pa-chat-message-bubble {
   background: var(--jp-layout-color2);
   color: var(--jp-ui-font-color1);
   border-bottom-left-radius: 4px;
 }
 
-.prime-agent-system-bubble {
-  background: var(--jp-layout-color3);
-  color: var(--jp-ui-font-color2);
-  font-size: var(--jp-ui-font-size0);
-  text-align: center;
-  border-radius: 8px;
-  padding: 6px 12px;
-  align-self: center;
-}
-
-/* ─── Markdown Content in Bubbles ────────────────────────────── */
-.prime-agent-assistant-bubble p {
-  margin: 4px 0;
-}
-
-.prime-agent-assistant-bubble ul,
-.prime-agent-assistant-bubble ol {
-  margin: 4px 0;
-  padding-left: 20px;
-}
-
-.prime-agent-assistant-bubble li {
-  margin: 2px 0;
-}
-
-.prime-agent-assistant-bubble strong {
-  font-weight: 600;
-}
-
-.prime-agent-assistant-bubble em {
-  font-style: italic;
-}
-
-.prime-agent-assistant-bubble code {
-  font-family: var(--jp-code-font-family);
-  font-size: var(--jp-code-font-size);
-  background: var(--jp-layout-color3);
-  padding: 1px 4px;
-  border-radius: 3px;
-}
-
-.prime-agent-assistant-bubble pre {
-  position: relative;
-  margin: 8px 0;
-  background: var(--jp-layout-color3);
-  border: 1px solid var(--jp-border-color2);
-  border-radius: 6px;
-  overflow-x: auto;
-}
-
-.prime-agent-assistant-bubble pre code {
-  display: block;
-  padding: 12px;
+.pa-chat-system-message .pa-chat-message-bubble {
   background: transparent;
-  border-radius: 0;
-}
-
-.prime-agent-assistant-bubble blockquote {
-  border-left: 3px solid var(--jp-brand-color2);
-  margin: 6px 0;
-  padding: 4px 12px;
-  color: var(--jp-ui-font-color2);
-}
-
-.prime-agent-assistant-bubble table {
-  border-collapse: collapse;
-  margin: 8px 0;
-  font-size: var(--jp-ui-font-size0);
-}
-
-.prime-agent-assistant-bubble th,
-.prime-agent-assistant-bubble td {
-  border: 1px solid var(--jp-border-color2);
-  padding: 4px 8px;
-  text-align: left;
-}
-
-.prime-agent-assistant-bubble th {
-  background: var(--jp-layout-color2);
-  font-weight: 600;
-}
-
-.prime-agent-assistant-bubble a {
-  color: var(--jp-content-link-color);
-  text-decoration: none;
-}
-
-.prime-agent-assistant-bubble a:hover {
-  text-decoration: underline;
-}
-
-/* ─── Fallback Plain Text Rendering ──────────────────────────── */
-.prime-agent-markdown-text {
-  line-height: 1.5;
-}
-
-.prime-agent-inline-code {
-  font-family: var(--jp-code-font-family);
-  font-size: var(--jp-code-font-size);
-  background: var(--jp-layout-color3);
-  padding: 1px 4px;
-  border-radius: 3px;
-}
-
-/* ─── Code Block (fallback) ──────────────────────────────────── */
-.prime-agent-code-block {
-  position: relative;
-  margin: 8px 0;
-  background: var(--jp-layout-color3);
-  border: 1px solid var(--jp-border-color2);
-  border-radius: 6px;
-  overflow-x: auto;
-}
-
-.prime-agent-code-lang {
-  position: absolute;
-  top: 4px;
-  left: 8px;
-  font-size: 10px;
   color: var(--jp-ui-font-color3);
-  font-family: var(--jp-ui-font-family);
+  font-style: italic;
+  text-align: center;
+  align-self: center;
+  border-radius: 0;
+  padding: 4px 12px;
 }
 
-.prime-agent-code-block code {
-  display: block;
-  padding: 12px;
-  font-family: var(--jp-code-font-family);
-  font-size: var(--jp-code-font-size);
-  color: var(--jp-ui-font-color1);
-}
+/* ================================================================ */
+/*  Message header                                                    */
+/* ================================================================ */
 
-/* ─── Code Toolbar (jupyter-chat pattern) ────────────────────── */
-.prime-agent-code-toolbar {
+.pa-chat-message-header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 4px 8px;
-  background: var(--jp-layout-color3);
-  border-bottom: 1px solid var(--jp-border-color2);
-  border-radius: 6px 6px 0 0;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
-.prime-agent-code-lang-label {
-  font-size: 10px;
-  color: var(--jp-ui-font-color3);
-  margin-right: auto;
-  font-family: var(--jp-ui-font-family);
-}
-
-.prime-agent-copy-btn {
-  display: inline-flex;
+.pa-chat-message-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--jp-brand-color2);
+  display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
-  border: none;
-  border-radius: 4px;
-  background: transparent;
-  color: var(--jp-ui-font-color2);
-  cursor: pointer;
-  font-size: 11px;
-  font-family: var(--jp-ui-font-family);
-  transition: all 0.15s;
-}
-
-.prime-agent-copy-btn:hover {
-  background: var(--jp-layout-color1);
-  color: var(--jp-ui-font-color0);
-}
-
-.prime-agent-copy-btn.copied {
-  color: var(--jp-success-color1, #2196f3);
-}
-
-.prime-agent-copy-btn svg {
+  justify-content: center;
+  font-size: 16px;
   flex-shrink: 0;
 }
 
-/* ─── Writing Indicator (jupyter-chat pattern) ───────────────── */
-.prime-agent-writing-indicator {
+.pa-chat-message-name {
+  font-weight: 600;
+  font-size: var(--jp-ui-font-size1);
+}
+
+.pa-chat-current-user .pa-chat-message-name {
+  color: var(--jp-ui-inverse-font-color1);
+}
+
+.pa-chat-other-user .pa-chat-message-name {
+  color: var(--jp-ui-font-color0);
+}
+
+.pa-chat-message-time {
+  font-size: 11px;
+  color: var(--jp-ui-font-color2);
+  margin-left: auto;
+}
+
+.pa-chat-current-user .pa-chat-message-time {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ================================================================ */
+/*  Message toolbar (edit/delete) — hidden by default                */
+/* ================================================================ */
+
+.pa-chat-message-toolbar {
+  display: flex;
+  gap: 2px;
+  margin-left: 8px;
+}
+
+.pa-chat-toolbar-btn {
+  background: none;
+  border: 1px solid var(--jp-border-color2);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.pa-chat-toolbar-btn:hover {
+  opacity: 1;
+  background: var(--jp-layout-color3);
+}
+
+.pa-chat-current-user .pa-chat-toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ================================================================ */
+/*  Message body (markdown content)                                   */
+/* ================================================================ */
+
+.pa-chat-message-body {
+  font-size: var(--jp-ui-font-size1);
+  line-height: 1.6;
+}
+
+/* Markdown elements inside message body */
+.pa-chat-message-body p {
+  margin: 0 0 8px;
+}
+
+.pa-chat-message-body p:last-child {
+  margin-bottom: 0;
+}
+
+.pa-chat-message-body ul,
+.pa-chat-message-body ol {
+  margin: 4px 0 8px;
+  padding-left: 20px;
+}
+
+.pa-chat-message-body li {
+  margin: 2px 0;
+}
+
+.pa-chat-message-body code {
+  background: var(--jp-layout-color3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: var(--jp-code-font-family);
+  font-size: var(--jp-code-font-size);
+}
+
+.pa-chat-current-user .pa-chat-message-body code {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.pa-chat-message-body pre {
+  margin: 8px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.pa-chat-current-user .pa-chat-message-body pre {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.pa-chat-message-body pre code {
+  display: block;
+  padding: 12px;
+  overflow-x: auto;
+  background: var(--jp-layout-color3);
+  font-family: var(--jp-code-font-family);
+  font-size: var(--jp-code-font-size);
+}
+
+.pa-chat-current-user .pa-chat-message-body pre code {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.pa-chat-message-body blockquote {
+  margin: 8px 0;
+  padding: 4px 12px;
+  border-left: 3px solid var(--jp-brand-color1);
+  color: var(--jp-ui-font-color2);
+}
+
+.pa-chat-message-body h1,
+.pa-chat-message-body h2,
+.pa-chat-message-body h3,
+.pa-chat-message-body h4 {
+  margin: 12px 0 6px;
+  color: inherit;
+}
+
+.pa-chat-message-body table {
+  border-collapse: collapse;
+  margin: 8px 0;
+  width: 100%;
+}
+
+.pa-chat-message-body th,
+.pa-chat-message-body td {
+  border: 1px solid var(--jp-border-color2);
+  padding: 4px 8px;
+  text-align: left;
+  font-size: var(--jp-ui-font-size0);
+}
+
+.pa-chat-current-user .pa-chat-message-body th,
+.pa-chat-current-user .pa-chat-message-body td {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pa-chat-message-body strong {
+  font-weight: 700;
+}
+
+.pa-chat-message-body em {
+  font-style: italic;
+}
+
+.pa-chat-message-body img {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.pa-chat-message-body a {
+  color: var(--jp-content-link-color);
+}
+
+.pa-chat-current-user .pa-chat-message-body a {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ================================================================ */
+/*  Code block toolbar                                                */
+/* ================================================================ */
+
+.pa-chat-code-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: var(--jp-layout-color3);
+  border-bottom: 1px solid var(--jp-border-color2);
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+
+.pa-chat-code-lang {
+  color: var(--jp-ui-font-color2);
+  font-family: var(--jp-code-font-family);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: auto;
+}
+
+.pa-chat-code-toolbar-btn {
+  background: none;
+  border: 1px solid var(--jp-border-color2);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: var(--jp-ui-font-color1);
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.pa-chat-code-toolbar-btn:hover {
+  background: var(--jp-layout-color2);
+}
+
+.pa-chat-code-toolbar-btn.pa-chat-copy-ok {
+  background: var(--jp-success-color1);
+  color: var(--jp-ui-inverse-font-color1);
+  border-color: var(--jp-success-color1);
+}
+
+/* ================================================================ */
+/*  Writing indicator                                                 */
+/* ================================================================ */
+
+.pa-chat-writing-indicator {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px;
-  min-height: 20px;
+  padding: 8px 16px;
+  color: var(--jp-ui-font-color2);
+  font-size: var(--jp-ui-font-size1);
+  flex-shrink: 0;
 }
 
-.prime-agent-writing-dots {
-  display: flex;
-  gap: 3px;
-  align-items: center;
-}
-
-.prime-agent-writing-dots span {
-  width: 4px;
-  height: 4px;
+.pa-chat-writing-dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--jp-ui-font-color3);
-  animation: prime-agent-bounce 1.4s infinite ease-in-out;
+  background: var(--jp-brand-color1);
+  animation: pa-bounce 1.4s infinite ease-in-out both;
 }
 
-.prime-agent-writing-dots span:nth-child(1) {
-  animation-delay: 0s;
+.pa-chat-writing-dot:nth-child(1) {
+  animation-delay: -0.32s;
 }
 
-.prime-agent-writing-dots span:nth-child(2) {
-  animation-delay: 0.2s;
+.pa-chat-writing-dot:nth-child(2) {
+  animation-delay: -0.16s;
 }
 
-.prime-agent-writing-dots span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes prime-agent-bounce {
+@keyframes pa-bounce {
   0%,
   80%,
   100% {
@@ -433,142 +478,271 @@
   }
 }
 
-.prime-agent-writing-text {
-  font-size: 11px;
-  color: var(--jp-ui-font-color3);
+.pa-chat-writing-text {
+  margin-left: 4px;
+  font-style: italic;
 }
 
-/* ─── Input Area ─────────────────────────────────────────────── */
-.prime-agent-input-area {
-  padding: 8px 12px 12px;
-  border-top: 1px solid var(--jp-border-color1);
-  background: var(--jp-layout-color0);
+/* ================================================================ */
+/*  Input area                                                        */
+/* ================================================================ */
+
+.pa-chat-input-area {
   flex-shrink: 0;
-}
-
-.prime-agent-input-wrapper {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
+  padding: 8px;
+  border-top: 1px solid var(--jp-border-color1);
   background: var(--jp-layout-color1);
-  border: 1px solid var(--jp-border-color2);
-  border-radius: 12px;
-  padding: 6px 8px;
-  transition: border-color 0.2s;
 }
 
-.prime-agent-input-wrapper:focus-within {
+.pa-chat-input-wrapper {
+  border: 1px solid var(--jp-border-color1);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.pa-chat-input-wrapper:focus-within {
   border-color: var(--jp-brand-color1);
-  box-shadow: 0 0 0 1px var(--jp-brand-color1);
 }
 
-.prime-agent-input {
-  flex: 1;
+.pa-chat-input-field {
+  width: 100%;
+  min-height: 40px;
+  max-height: 160px;
+  padding: 10px 12px;
   border: none;
   outline: none;
-  background: transparent;
-  color: var(--jp-ui-font-color0);
+  resize: none;
   font-family: var(--jp-ui-font-family);
   font-size: var(--jp-ui-font-size1);
-  resize: none;
-  min-height: 20px;
-  max-height: 150px;
-  line-height: 1.4;
-  padding: 2px 4px;
+  color: var(--jp-ui-font-color1);
+  background: var(--jp-layout-color0);
+  line-height: 1.5;
+  box-sizing: border-box;
 }
 
-.prime-agent-input::placeholder {
+.pa-chat-input-field::placeholder {
   color: var(--jp-ui-font-color3);
 }
 
-.prime-agent-input:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.pa-chat-input-field.pa-chat-editing {
+  background: var(--jp-warn-color4);
 }
 
-/* ─── Buttons ────────────────────────────────────────────────── */
-.prime-agent-btn-row {
+/* ================================================================ */
+/*  Input toolbar                                                     */
+/* ================================================================ */
+
+.pa-chat-input-toolbar {
   display: flex;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-.prime-agent-send-btn,
-.prime-agent-stop-btn {
-  display: inline-flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 4px;
-  padding: 4px 10px;
+  padding: 6px 8px;
+  border-top: 1px solid var(--jp-border-color1);
+  background: var(--jp-layout-color0);
+}
+
+.pa-chat-input-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 12px;
-  font-family: var(--jp-ui-font-family);
-  transition: all 0.15s;
+  transition: background 0.15s, opacity 0.15s;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
 }
 
-.prime-agent-send-btn {
+.pa-chat-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Send button */
+.pa-chat-send-btn {
   background: var(--jp-brand-color1);
-  color: var(--jp-ui-inverse-font-color0);
+  color: var(--jp-ui-inverse-font-color1);
 }
 
-.prime-agent-send-btn:hover {
+.pa-chat-send-btn:hover {
   background: var(--jp-brand-color0);
 }
 
-.prime-agent-send-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.prime-agent-send-btn svg,
-.prime-agent-stop-btn svg {
-  flex-shrink: 0;
-}
-
-.prime-agent-stop-btn {
-  background: var(--jp-error-color1);
-  color: var(--jp-ui-inverse-font-color0);
-}
-
-.prime-agent-stop-btn:hover {
-  background: var(--jp-error-color0, #d32f2f);
-}
-
-/* ─── Scrollbar Styling ──────────────────────────────────────── */
-.prime-agent-scroll-container::-webkit-scrollbar {
-  width: 6px;
-}
-
-.prime-agent-scroll-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.prime-agent-scroll-container::-webkit-scrollbar-thumb {
+.pa-chat-send-btn:disabled {
   background: var(--jp-border-color2);
+  color: var(--jp-ui-font-color3);
+  cursor: default;
+}
+
+/* Stop button */
+.pa-chat-stop-btn {
+  background: var(--jp-error-color1);
+  color: var(--jp-ui-inverse-font-color1);
+}
+
+.pa-chat-stop-btn:hover {
+  background: var(--jp-error-color0);
+}
+
+/* Attach button */
+.pa-chat-attach-btn {
+  background: var(--jp-layout-color2);
+  color: var(--jp-ui-font-color1);
+}
+
+.pa-chat-attach-btn:hover {
+  background: var(--jp-layout-color3);
+}
+
+/* ================================================================ */
+/*  Navigation arrows                                                 */
+/* ================================================================ */
+
+.pa-chat-navigation {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.pa-chat-navigation-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--jp-border-color1);
+  background: var(--jp-layout-color1);
+  color: var(--jp-ui-font-color1);
+  cursor: pointer;
+  font-size: 12px;
+  pointer-events: all;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: background 0.15s;
+}
+
+.pa-chat-navigation-btn:hover {
+  background: var(--jp-layout-color2);
+}
+
+.pa-chat-navigation-unread {
+  background: var(--jp-brand-color1);
+  color: var(--jp-ui-inverse-font-color1);
+  border-color: var(--jp-brand-color1);
+}
+
+/* ================================================================ */
+/*  Attachments                                                       */
+/* ================================================================ */
+
+.pa-chat-input-attachments {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  flex-wrap: wrap;
+}
+
+.pa-chat-attachment-preview {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: var(--jp-layout-color2);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--jp-ui-font-color1);
+}
+
+.pa-chat-attachment-remove {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.pa-chat-attachment-remove:hover {
+  opacity: 1;
+}
+
+/* ================================================================ */
+/*  Stream wrapper                                                    */
+/* ================================================================ */
+
+.pa-chat-stream {
+  min-height: 20px;
+}
+
+/* ================================================================ */
+/*  Mention highlight                                                 */
+/* ================================================================ */
+
+.pa-chat-mention {
+  background: var(--jp-brand-color4);
+  color: var(--jp-brand-color0);
+  padding: 0 3px;
   border-radius: 3px;
+  font-weight: 500;
 }
 
-.prime-agent-scroll-container::-webkit-scrollbar-thumb:hover {
-  background: var(--jp-border-color3);
+/* ================================================================ */
+/*  Tooltip (for disabled buttons)                                    */
+/* ================================================================ */
+
+.pa-chat-input-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
-/* ─── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 350px) {
-  .prime-agent-header {
-    padding: 6px 8px;
-  }
+/* ================================================================ */
+/*  Responsive adjustments for sidebar                                */
+/* ================================================================ */
 
-  .prime-agent-messages {
-    padding: 8px;
-  }
+.jp-SidePanel .pa-chat-widget {
+  font-size: 13px;
+}
 
-  .prime-agent-input-area {
-    padding: 6px 8px 8px;
-  }
+.jp-SidePanel .pa-chat-messages-box {
+  padding: 8px 6px 32px;
+  gap: 8px;
+}
 
-  .prime-agent-bubble {
-    padding: 6px 10px;
-    font-size: var(--jp-ui-font-size0);
-  }
+.jp-SidePanel .pa-chat-message-bubble {
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.jp-SidePanel .pa-chat-message-avatar {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+}
+
+.jp-SidePanel .pa-chat-input-field {
+  font-size: 13px;
+  padding: 8px 10px;
+}
+
+/* ================================================================ */
+/*  Dark theme adjustments                                           */
+/* ================================================================ */
+
+body[data-jp-theme-light='false'] .pa-chat-message-bubble {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+body[data-jp-theme-light='false'] .pa-chat-current-user .pa-chat-message-body pre code {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+body[data-jp-theme-light='false'] .pa-chat-code-toolbar {
+  background: rgba(0, 0, 0, 0.3);
 }
