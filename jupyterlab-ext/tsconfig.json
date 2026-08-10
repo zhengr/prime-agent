@@ -14,8 +14,9 @@
     "rootDir": "./src",
     "strict": true,
     "target": "ES2022",
-    "sourceMap": true,
-    "declarationMap": true
+    "jsx": "react",
+    "declarationMap": true,
+    "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

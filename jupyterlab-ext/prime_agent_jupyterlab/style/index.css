@@ -1,0 +1,2 @@
+/* Import base styles — this is the entry point loaded by JupyterLab */
+@import './base.css';
