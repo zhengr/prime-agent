@@ -39,7 +39,7 @@ def _find_prime_agent_bin() -> str:
         if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
             return candidate
 
-    workspace = os.environ.get("PRIME_AGENT_CWD", os.path.expanduser("~/workspace"))
+    workspace = os.environ.get("PRIME_AGENT_CWD", "/workspace")
     for root_dir in [workspace, os.path.expanduser("~"), "/app"]:
         for sub in ["prime-agent", ".prime-agent", ""]:
             bundle = os.path.join(root_dir, sub, "packages/coding-agent/dist/bundle/cli.js")
@@ -123,7 +123,7 @@ class PrimeAgentWebSocketHandler(tornado.websocket.WebSocketHandler):
 
         await self._kill_process()
 
-        cwd = self._cws.get(self.session_id, os.environ.get("PRIME_AGENT_CWD", os.path.expanduser("~/workspace")))
+        cwd = self._cws.get(self.session_id, os.environ.get("PRIME_AGENT_CWD", "/workspace"))
 
         cmd = ["node", AGENT_BIN, "--print", "json", "--", text]
 
@@ -231,7 +231,7 @@ class PrimeAgentConfigHandler(JupyterHandler):
             "agentBin": AGENT_BIN,
             "available": bool(AGENT_BIN),
             "version": __version__,
-            "cwd": os.environ.get("PRIME_AGENT_CWD", os.path.expanduser("~/workspace")),
+            "cwd": os.environ.get("PRIME_AGENT_CWD", "/workspace"),
         }))
 
 
